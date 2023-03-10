@@ -2,7 +2,7 @@ package cp3406.practical.diceroller
 
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +12,9 @@ class MainActivity : AppCompatActivity() {
 
         val rollButton: Button = findViewById(R.id.button)
         rollButton.setOnClickListener { rollDice() }
+
+        // Roll dice on app start
+        rollDice()
     }
 
     /**
@@ -20,13 +23,21 @@ class MainActivity : AppCompatActivity() {
     private fun rollDice() {
         // Create new Dice object with x sides and roll it
         val dice = Dice(6)
-//        val diceRoll = dice.roll()
+        val diceRoll = dice.roll()
         // Update the screen with the dice roll
-        val resultTextView: TextView = findViewById(R.id.textView)
-        resultTextView.text = dice.roll().toString()
-
-        val resultTextView2: TextView = findViewById(R.id.textView2)
-        resultTextView2.text = dice.roll().toString()
+        val diceImage: ImageView = findViewById(R.id.imageView)
+        // Change dice image based on die number
+        val drawableResource = when (diceRoll) {
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
+        }
+        diceImage.setImageResource(drawableResource)
+        // Tell screen readers which number was rolled
+        diceImage.contentDescription = diceRoll.toString()
     }
 
 }
